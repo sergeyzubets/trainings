@@ -2,18 +2,11 @@ package com.sparta.training8;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.ToString;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-
-@ToString
-@Data
-@AllArgsConstructor
 
 public class ResearchProgram {
 
@@ -30,13 +23,13 @@ public class ResearchProgram {
 
         //Создаем корабли
         SpaceShip spaceShuttle1 = new SpaceShuttle("Space Shuttle 1", 7, 2, 3, 4, 6);
-        SpaceShip buran1 = new Buran("Buran 1", 2, 20, 20, 12, 22,10,11);
-        SpaceShip shenzhou1 = new ChinaSpaceShip("Shenzhou 1",13,15,13,14.5, 15.5);
-        SpaceShip euro1 = new EuropeanSpaceShip("EuropeanSpaceShip 1",2,1,1,22,33);
+        SpaceShip buran1 = new Buran("Buran 1", 2, 20, 20, 12, 22, 10, 11);
+        SpaceShip shenzhou1 = new ChinaSpaceShip("Shenzhou 1", 13, 15, 13, 14.5, 15.5);
+        SpaceShip euro1 = new EuropeanSpaceShip("EuropeanSpaceShip 1", 2, 1, 1, 22, 33);
 
         CelestialObject mars = new CelestialObject();
         mars = mars.findObjectsByName(celestialObjects, "Mars");
-        spaceShuttle1.exploration(mars, 100, celestialObjects, filePath);
+        spaceShuttle1.exploration(mars, 1000, celestialObjects, filePath);
 
 //        CelestialObject jupiter = new CelestialObject();
 //        jupiter.setName("Jupiter");

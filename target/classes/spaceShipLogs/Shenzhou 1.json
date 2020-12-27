@@ -62,7 +62,7 @@
   "waterExplCoef" : 0.3,
   "lifeExplCoef" : 0.5,
   "targetName" : "Atlas",
-  "atmosphere" : "false",
+  "atmosphere" : "true",
   "water" : "Воду исследовать не успели, не хватило 47 дня(ей).",
   "life" : "Жизнь исследовать не успели, не хватило 111 дня(ей).",
   "oil" : "unknown",

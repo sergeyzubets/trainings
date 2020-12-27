@@ -8,7 +8,7 @@
   "waterExplCoef" : 0.3,
   "lifeExplCoef" : 0.5,
   "targetName" : "Titan",
-  "atmosphere" : "false",
+  "atmosphere" : "true",
   "water" : "Воду исследовать не успели, не хватило 50 дня(ей).",
   "life" : "Жизнь исследовать не успели, не хватило 114 дня(ей).",
   "oil" : "unknown",

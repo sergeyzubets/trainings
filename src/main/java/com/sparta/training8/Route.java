@@ -1,11 +1,7 @@
 package com.sparta.training8;
 
-import lombok.AllArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
-
-@AllArgsConstructor
 
 public class Route extends CelestialObject {
 

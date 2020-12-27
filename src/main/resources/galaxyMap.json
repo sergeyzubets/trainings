@@ -6,24 +6,24 @@
   "diameter" : 6779,
   "atmosphere" : "unknown",
   "water" : "unknown",
-  "extraterrestrialLife" : "unknown",
   "oil" : "unknown",
   "gas" : "unknown",
   "minerals" : "unknown",
-  "ore" : "unknown"
+  "ore" : "unknown",
+  "extraterrestrialLife" : "unknown"
 }, {
   "name" : "Mars",
   "type" : "planet",
   "systemName" : "Solar system",
   "parentObject" : "Solar",
   "diameter" : 6779,
-  "atmosphere" : "false",
-  "water" : "true",
-  "extraterrestrialLife" : "true",
-  "oil" : "true",
-  "gas" : "true",
-  "minerals" : "false",
-  "ore" : "false"
+  "atmosphere" : "unknown",
+  "water" : "unknown",
+  "oil" : "unknown",
+  "gas" : "unknown",
+  "minerals" : "unknown",
+  "ore" : "unknown",
+  "extraterrestrialLife" : "unknown"
 }, {
   "name" : "Fobos",
   "type" : "moon",
@@ -32,11 +32,11 @@
   "diameter" : 1000,
   "atmosphere" : "unknown",
   "water" : "unknown",
-  "extraterrestrialLife" : "unknown",
   "oil" : "unknown",
   "gas" : "unknown",
   "minerals" : "unknown",
-  "ore" : "unknown"
+  "ore" : "unknown",
+  "extraterrestrialLife" : "unknown"
 }, {
   "name" : "Deimos",
   "type" : "moon",
@@ -45,37 +45,37 @@
   "diameter" : 1000,
   "atmosphere" : "unknown",
   "water" : "unknown",
-  "extraterrestrialLife" : "unknown",
   "oil" : "unknown",
   "gas" : "unknown",
   "minerals" : "unknown",
-  "ore" : "unknown"
+  "ore" : "unknown",
+  "extraterrestrialLife" : "unknown"
 }, {
   "name" : "Venus",
   "type" : "planet",
   "systemName" : "Solar system",
   "parentObject" : "Solar",
   "diameter" : 12104,
-  "atmosphere" : "true",
+  "atmosphere" : "unknown",
   "water" : "unknown",
-  "extraterrestrialLife" : "unknown",
   "oil" : "unknown",
   "gas" : "unknown",
   "minerals" : "unknown",
-  "ore" : "unknown"
+  "ore" : "unknown",
+  "extraterrestrialLife" : "unknown"
 }, {
   "name" : "Titan",
   "type" : "moon",
   "systemName" : "Solar system",
   "parentObject" : "Saturn",
   "diameter" : 5152,
-  "atmosphere" : "true",
+  "atmosphere" : " unknown",
   "water" : "unknown",
-  "extraterrestrialLife" : "unknown",
   "oil" : "unknown",
   "gas" : "unknown",
-  "minerals" : "false",
-  "ore" : "unknown"
+  "minerals" : "unknown",
+  "ore" : "unknown",
+  "extraterrestrialLife" : "unknown"
 }, {
   "name" : "Ganymede",
   "type" : "moon",
@@ -84,48 +84,48 @@
   "diameter" : 5268,
   "atmosphere" : "unknown",
   "water" : "unknown",
-  "extraterrestrialLife" : "unknown",
   "oil" : "unknown",
   "gas" : "unknown",
   "minerals" : "unknown",
-  "ore" : "unknown"
+  "ore" : "unknown",
+  "extraterrestrialLife" : "unknown"
 }, {
   "name" : "Prometheus",
   "type" : "moon",
   "systemName" : "Solar system",
   "parentObject" : "Saturn",
   "diameter" : 136,
-  "atmosphere" : "true",
-  "water" : "true",
-  "extraterrestrialLife" : "true",
+  "atmosphere" : " unknown",
+  "water" : "unknown",
   "oil" : "unknown",
-  "gas" : "true",
-  "minerals" : "false",
-  "ore" : "false"
+  "gas" : "unknown",
+  "minerals" : "unknown",
+  "ore" : "unknown",
+  "extraterrestrialLife" : "unknown"
 }, {
   "name" : "Pandora",
   "type" : "moon",
   "systemName" : "Solar system",
   "parentObject" : "Saturn",
   "diameter" : 103,
-  "atmosphere" : "true",
-  "water" : "true",
-  "extraterrestrialLife" : "false",
+  "atmosphere" : " unknown",
+  "water" : "unknown",
   "oil" : "unknown",
   "gas" : "unknown",
-  "minerals" : "false",
-  "ore" : "false"
+  "minerals" : "unknown",
+  "ore" : "unknown",
+  "extraterrestrialLife" : " unknown"
 }, {
   "name" : "Atlas",
   "type" : "moon",
   "systemName" : "Solar system",
   "parentObject" : "Saturn",
   "diameter" : 32,
-  "atmosphere" : "true",
-  "water" : "false",
-  "extraterrestrialLife" : "false",
+  "atmosphere" : " unknown",
+  "water" : "unknown",
   "oil" : "unknown",
   "gas" : "unknown",
-  "minerals" : "true",
-  "ore" : "false"
+  "minerals" : "unknown",
+  "ore" : "unknown",
+  "extraterrestrialLife" : "unknown"
 } ]

@@ -13,7 +13,7 @@
   "life" : "Жизнь исследовать не успели, не хватило 2828 дня(ей).",
   "oil" : "unknown",
   "gas" : "Газ исследовать не успели, не хватило 31 дня(ей).",
-  "minerals" : "false",
+  "minerals" : "true",
   "ore" : "unknown",
   "logFilePath" : "file:///C:/Users/sergeyzubets/IdeaProjects/trainig/sparta/src/main/resources/spaceShipLogs/EuropeanSpaceShip%201.json"
 }, {
@@ -26,12 +26,12 @@
   "waterExplCoef" : 0.3,
   "lifeExplCoef" : 0.5,
   "targetName" : "Titan",
-  "atmosphere" : "true",
+  "atmosphere" : "false",
   "water" : "Воду исследовать не успели, не хватило 923 дня(ей).",
   "life" : "Жизнь исследовать не успели, не хватило 1618 дня(ей).",
   "oil" : "unknown",
   "gas" : "Газ исследовать не успели, не хватило 2 дня(ей).",
-  "minerals" : "false",
+  "minerals" : "true",
   "ore" : "unknown",
   "logFilePath" : "file:///C:/Users/sergeyzubets/IdeaProjects/trainig/sparta/src/main/resources/spaceShipLogs/EuropeanSpaceShip%201.json"
 }, {
@@ -49,7 +49,7 @@
   "life" : "Жизнь исследовать не успели, не хватило 1618 дня(ей).",
   "oil" : "unknown",
   "gas" : "Газ исследовать не успели, не хватило 2 дня(ей).",
-  "minerals" : "false",
+  "minerals" : "true",
   "ore" : "unknown",
   "logFilePath" : "file:///C:/Users/sergeyzubets/IdeaProjects/trainig/sparta/src/main/resources/spaceShipLogs/EuropeanSpaceShip%201.json"
 } ]

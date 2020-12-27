@@ -45,11 +45,11 @@
   "lifeExplCoef" : 0.5,
   "targetName" : "Mars",
   "atmosphere" : "false",
-  "water" : "true",
-  "life" : "true",
+  "water" : "false",
+  "life" : "false",
   "oil" : "true",
-  "gas" : "true",
+  "gas" : "false",
   "minerals" : "true",
-  "ore" : "false",
+  "ore" : "true",
   "logFilePath" : "file:///C:/Users/sergeyzubets/IdeaProjects/trainig/sparta/src/main/resources/spaceShipLogs/Buran%201.json"
 } ]
