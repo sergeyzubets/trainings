@@ -1,0 +1,19 @@
+[ {
+  "shipName" : "Space Shuttle 1",
+  "shipType" : "SpaceShuttle",
+  "atmosphereExplRate" : 7.0,
+  "waterExplRate" : 2.0,
+  "lifeExplRate" : 3.0,
+  "atmosphereExplCoef" : 0.01,
+  "waterExplCoef" : 0.3,
+  "lifeExplCoef" : 0.5,
+  "targetName" : "Mars",
+  "atmosphere" : "true",
+  "water" : "Воду исследовать не успели, не хватило 803 дня(ей).",
+  "life" : "Жизнь исследовать не успели, не хватило 903 дня(ей).",
+  "oil" : "Нефть исследовать не успели, не хватило 803 дня(ей).",
+  "gas" : "Газ исследовать не успели, не хватило 672 дня(ей).",
+  "minerals" : "unknown",
+  "ore" : "unknown",
+  "logFilePath" : "file:///C:/Users/sergeyzubets/IdeaProjects/trainig/sparta/src/main/resources/spaceShipLogs/Space%20Shuttle%201.json"
+} ]
