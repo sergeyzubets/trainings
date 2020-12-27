@@ -1,4 +1,4 @@
-package com.sparta.training6;
+package com.sparta.training8;
 
 import lombok.AllArgsConstructor;
 

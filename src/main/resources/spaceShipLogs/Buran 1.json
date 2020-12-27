@@ -26,7 +26,7 @@
   "waterExplCoef" : 0.3,
   "lifeExplCoef" : 0.5,
   "targetName" : "Venus",
-  "atmosphere" : "false",
+  "atmosphere" : "true",
   "water" : "Воду исследовать не успели, не хватило 166 дня(ей).",
   "life" : "Жизнь исследовать не успели, не хватило 358 дня(ей).",
   "oil" : "Нефть исследовать не успели, не хватило 837 дня(ей).",
@@ -47,9 +47,9 @@
   "atmosphere" : "false",
   "water" : "true",
   "life" : "true",
-  "oil" : "false",
-  "gas" : "false",
+  "oil" : "true",
+  "gas" : "true",
   "minerals" : "true",
-  "ore" : "true",
+  "ore" : "false",
   "logFilePath" : "file:///C:/Users/sergeyzubets/IdeaProjects/trainig/sparta/src/main/resources/spaceShipLogs/Buran%201.json"
 } ]
