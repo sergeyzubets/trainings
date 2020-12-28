@@ -12,13 +12,6 @@ import java.util.List;
 
 public class ChinaSpaceShip extends SpaceShip {
 
-    private double mineralsExplRate;
-    private double mineralsExplCoef = 0.8;
-    private int mineralsMinRequiredDays;
-    private double oreExplRate;
-    private double oreExplCoef = 0.88;
-    private int oreMinRequiredDays;
-
     public ChinaSpaceShip(String shipName, double atmosphereExplRate, double waterExplRate, double lifeExplRate, double mineralsExplRate, double oreExplRate) throws IOException {
         super(shipName, atmosphereExplRate, waterExplRate, lifeExplRate);
         this.mineralsExplRate = mineralsExplRate;
@@ -26,42 +19,10 @@ public class ChinaSpaceShip extends SpaceShip {
     }
 
     @Override
-    public void exploration(CelestialObject celestialObject, int durationDays, List<CelestialObject> celestialObjectArray, Path filePath) throws IOException {
-        //вычисляем площадь повехности шара = PI*D^2
-        double surfaceArea = Math.PI * Math.pow(celestialObject.getDiameter(), 2);
-        // поиск полезных ископаемых
-        mineralsExploration(celestialObject, durationDays, surfaceArea);
-        // поиск руды
-        oreExploration(celestialObject, durationDays, surfaceArea);
-        super.exploration(celestialObject, durationDays, celestialObjectArray, filePath);
-    }
-
-    //Поиск полезных ископаемых. Результат исследования становиться известен, если просканировано >= 80% поверхности
-    public void mineralsExploration(CelestialObject celestialObject, int durationDays, double surfaceArea) {
-        if (mineralsExplRate * 1000 * durationDays * 24 >= surfaceArea * mineralsExplCoef) {
-            boolean b = giveMeBooleanRandom();
-            if (b) {
-                celestialObject.setMinerals("true");
-            } else {
-                celestialObject.setMinerals("false");
-            }
-        } else {
-            mineralsMinRequiredDays = (int) ((surfaceArea * mineralsExplCoef) / (mineralsExplRate * 1000 * 24)) + 1;
-        }
-    }
-
-    //Поиск руды. Результат исследования становиться известен, если просканировано >= 88% поверхности И найдены полезные ископаемые
-    public void oreExploration(CelestialObject celestialObject, int durationDays, double surfaceArea) {
-        if (oreExplRate * 1000 * durationDays * 24 >= surfaceArea * oreExplCoef) {
-            boolean b = giveMeBooleanRandom();
-            if (b && celestialObject.getMinerals().contains("rue")) {
-                celestialObject.setOre("true");
-            } else {
-                celestialObject.setOre("false");
-            }
-        } else {
-            oreMinRequiredDays = (int) ((surfaceArea * oreExplCoef) / (oreExplRate * 1000 * 24)) + 1;
-        }
+    public void exploration(CelestialObject celestialObject, int durationDays, List<CelestialObject> celestialObjectsArray, Path filePath) throws IOException {
+        mineralsExploration(celestialObject, durationDays);
+        oreExploration(celestialObject, durationDays);
+        super.exploration(celestialObject, durationDays, celestialObjectsArray, filePath);
     }
 
     @Override

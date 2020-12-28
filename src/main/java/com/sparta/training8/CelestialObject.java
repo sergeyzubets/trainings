@@ -36,22 +36,30 @@ public class CelestialObject {
 
     //поиск объекта по названию
     public CelestialObject findObjectsByName(List<CelestialObject> celestialObject, String searchByName) {
-        CelestialObject foundCelestialObject = null;
+        CelestialObject foundCelestialObject;
         for (CelestialObject celestialObjects : celestialObject) {
             if (celestialObjects.getName().equals(searchByName)) {
                 foundCelestialObject = celestialObjects;
+                return foundCelestialObject;
             }
         }
-        return foundCelestialObject;
+        System.out.println("Искомый объект не найден! Вместо него летим на Землю");
+        return celestialObject.get(0);
     }
 
     //поиск всех спутников планеты
     public List<CelestialObject> findAllMoons(List<CelestialObject> celestialObject, String parentName) {
         List<CelestialObject> foundCelestialObjects = new ArrayList<>();
+        int counter = 0;
         for (CelestialObject celestialObjects : celestialObject) {
             if (celestialObjects.getParentObject().equals(parentName) && (celestialObjects.getType().contains("oon"))) {
                 foundCelestialObjects.add(celestialObjects);
+                counter++;
             }
+        }
+        if (counter == 0) {
+            foundCelestialObjects.add(celestialObject.get(0));
+            System.out.println("У искомого объекта нет спутников! Вместо него летим на Землю");
         }
         return foundCelestialObjects;
     }
@@ -59,10 +67,16 @@ public class CelestialObject {
     //поиск всех объектов звездной системы
     public List<CelestialObject> findAllCelestialObjects(List<CelestialObject> celestialObject, String systemName) {
         List<CelestialObject> foundCelestialObjects = new ArrayList<>();
+        int counter = 0;
         for (CelestialObject celestialObjects : celestialObject) {
             if (celestialObjects.getSystemName().equals(systemName)) {
                 foundCelestialObjects.add(celestialObjects);
+                counter++;
             }
+        }
+        if (counter == 0) {
+            foundCelestialObjects.add(celestialObject.get(0));
+            System.out.println("Искомой системы не найдено или у системы нет объектов! Вместо него летим на Землю");
         }
         return foundCelestialObjects;
     }
@@ -70,10 +84,16 @@ public class CelestialObject {
     //поиск всех планет звездной системы
     public List<CelestialObject> findAllPlanets(List<CelestialObject> celestialObject, String systemName) {
         List<CelestialObject> foundCelestialObjects = new ArrayList<>();
+        int counter = 0;
         for (CelestialObject celestialObjects : celestialObject) {
             if (celestialObjects.getSystemName().equals(systemName) && (celestialObjects.getType().contains("lanet"))) {
                 foundCelestialObjects.add(celestialObjects);
+                counter++;
             }
+        }
+        if (counter == 0) {
+            foundCelestialObjects.add(celestialObject.get(0));
+            System.out.println("Искомой системы не найдено или у системы нет планет! Вместо него летим на Землю");
         }
         return foundCelestialObjects;
     }
@@ -83,10 +103,7 @@ public class CelestialObject {
         List<CelestialObject> celestialObjectsBackup = new ArrayList<>(celestialObject);
         celestialObject.clear();
         celestialObject.addAll(galaxyMapStandardization(celestialObjectsBackup));
-        //обновляем карту
-        new ObjectMapper()
-                .writerWithDefaultPrettyPrinter()
-                .writeValue(filePath.toFile(), celestialObject);
+        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(filePath.toFile(), celestialObject);
     }
 
     //приведение карты к "шаблону": type, water, atmosphere, extraterrestrialLife, oil, gas, minerals, ore - всегда пишутся с маленькой буквы

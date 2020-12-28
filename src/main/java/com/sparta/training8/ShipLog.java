@@ -11,23 +11,21 @@ import java.nio.file.Path;
 @Setter
 
 public class ShipLog {
-
-    private String shipName;
-    private String shipType;
-    private double atmosphereExplRate;
-    private double waterExplRate;
-    private double lifeExplRate;
-    private double atmosphereExplCoef;
-    private double waterExplCoef;
-    private double lifeExplCoef;
-    private String targetName;
-    private String atmosphere = "unknown";
-    private String water = "unknown";
-    private String life = "unknown";
-    private String oil = "unknown";
-    private String gas = "unknown";
-    private String minerals = "unknown";
-    private String ore = "unknown";
-    private Path logFilePath;
-
+    String shipName;
+    String shipType;
+    double atmosphereExplRate;
+    double waterExplRate;
+    double lifeExplRate;
+    double atmosphereExplCoef;
+    double waterExplCoef;
+    double lifeExplCoef;
+    String targetName;
+    String atmosphere = "unknown";
+    String water = "unknown";
+    String life = "unknown";
+    String oil = "unknown";
+    String gas = "unknown";
+    String minerals = "unknown";
+    String ore = "unknown";
+    Path logFilePath;
 }

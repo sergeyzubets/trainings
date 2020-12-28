@@ -3,9 +3,9 @@ package com.sparta.training8;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Route extends CelestialObject {
+public class Route {
 
-    protected String name;
+    String name;
     List<CelestialObject> routeTargetCelestials = new ArrayList<>();
     List<Integer> routeTargetDurationDays = new ArrayList<>();
 
