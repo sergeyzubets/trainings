@@ -1,9 +1,0 @@
-# Default ignored files
-/shelf/
-/workspace.xml
-# игнорировать все файлы в каталоге build/
-build/
-# игнорировать все файлы в каталоге .idea/
-.idea/
-# игнорировать все файлы в каталоге target/
-target/
