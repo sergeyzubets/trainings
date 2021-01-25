@@ -3,6 +3,7 @@
 <suite name="SmokeTestsSuite">
 
     <test name="Find Coffee Smoke Test">
+        <parameter name="link" value="https://e-dostavka.by/"/>
 
         <classes>
             <class name="com.sparta.web.FindCoffee">
