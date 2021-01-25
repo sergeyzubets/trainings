@@ -27,7 +27,7 @@ public class Application {
 
         CelestialObject mars = new CelestialObject();
         mars = mars.findObjectsByName(celestialObjects, "Mars");
-//        spaceShuttle1.exploration(mars, 1000, celestialObjects, filePath);
+        spaceShuttle1.exploration(mars, 1000, celestialObjects, filePath);
 
 //        CelestialObject jupiter = new CelestialObject();
 //        jupiter.setName("Jupiter");

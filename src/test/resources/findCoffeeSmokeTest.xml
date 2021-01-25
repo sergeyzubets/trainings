@@ -7,7 +7,8 @@
         <classes>
             <class name="com.sparta.web.FindCoffee">
                 <methods>
-                    <include name="FindCoffeeLavazza"/>
+                    <include name="FindCoffeeLavazza1"/>
+                    <include name="FindCoffeeLavazza2"/>
                 </methods>
             </class>
         </classes>
