@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="SmokeTestsSuite">
+<suite name="Smoke Tests Suite">
 
     <test name="Find Coffee Smoke Test">
-        <parameter name="link" value="https://e-dostavka.by/"/>
-
         <classes>
             <class name="com.sparta.web.FindCoffee">
+                <parameter name="link" value="https://e-dostavka.by/"/>
                 <methods>
-                    <include name="FindCoffeeLavazza1"/>
-                    <include name="FindCoffeeLavazza2"/>
+                    <exclude name="FindCoffeeLavazza4"/>
                 </methods>
             </class>
         </classes>
