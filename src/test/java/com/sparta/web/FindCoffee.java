@@ -8,11 +8,8 @@ import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
-import javax.xml.transform.sax.SAXResult;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.codeborne.selenide.Selenide.*;
@@ -22,67 +19,66 @@ public class FindCoffee {
     String link;
 
     @Parameters({"link"})
-    @BeforeMethod
+    @BeforeClass
     public void setUp(String link) {
         this.link = link;
     }
 
-    @Test(dataProvider = "getInputCoffee")
-    public void FindCoffeeLavazza1(String coffeeName, String pricePerKilo) {
+    @BeforeMethod
+    public void openLink() {
         open(link);
+    }
+
+    @Test(dataProvider = "getInputCoffee")
+    public void findCoffeeLavazza1(InputCoffee inputCoffee) {
         $x("//div[@class='main_menu__inner']//child::li[@id='main_menu__search']").click();
-        $x("//input[@id='searchtext']").setValue(coffeeName).pressEnter();
-        String xPath = "//div[@class='title']/a[contains(text(),'" + coffeeName + "')]/.." +
+        $(By.id("searchtext")).setValue(inputCoffee.getCoffeeName()).pressEnter();
+        String xPath = "//div[@class='title']/a[contains(text(),'" + inputCoffee.getCoffeeName() + "')]/.." +
                 "//following-sibling::div[@class='prices__wrapper']//div[@class='price_byn']/div[@class='price']";
-        Assert.assertTrue($x(xPath).exists(), "Элемент на найден");
-        String returnedPrice = $x(xPath).getText()
-                .replaceAll("\n.*", "")
-                .replaceAll("[а-яА-Я]", "")
-                .replaceAll(".$", "");
+        SelenideElement sElement = $x(xPath);
+        Assert.assertTrue(sElement.exists(), "Item not found");
+        String returnedPrice = clearPrice(sElement.getText());
         Assert.assertEquals(
                 Double.toString(2 * Double.parseDouble(returnedPrice)),
-                pricePerKilo,
-                "Цена за 1кг не совпадает");
+                inputCoffee.getPricePerKilo(),
+                "Price for 1kg does not match");
     }
 
     @Test(dataProvider = "getInputCoffee")
-    public void FindCoffeeLavazza2(String coffeeName, String pricePerKilo) {
-        open(link);
+    public void findCoffeeLavazza2(InputCoffee inputCoffee) {
         $x("//div[@class='main_menu__inner']//child::li[@id='main_menu__search']").click();
-        $x("//input[@id='searchtext']").setValue(coffeeName).pressEnter();
+        $(By.id("searchtext")).setValue(inputCoffee.getCoffeeName()).pressEnter();
         Assert.assertTrue(
-                $x("//a[contains(text(),'" + coffeeName + "')]").isDisplayed(),
-                "Элемент на найден"
-        );
-        $x("//a[contains(text(),'" + coffeeName + "')]").click();
+                $x("//a[contains(text(),'" + inputCoffee.getCoffeeName() + "')]").isDisplayed(),
+                "Item not found");
+        $x("//a[contains(text(),'" + inputCoffee.getCoffeeName() + "')]").click();
         Assert.assertEquals(
                 $x("//ul[@class='description']/li[last()]/span").getText(),
-                pricePerKilo,
-                "Цена за 1кг не совпадает");
+                inputCoffee.getPricePerKilo(),
+                "Price for 1kg does not match");
     }
 
     @Test(dataProvider = "getInputCoffee")
-    public void FindCoffeeLavazza3(String coffeeName, String pricePerKilo) {
-        open(link);
+    public void findCoffeeLavazza3(InputCoffee inputCoffee) {
         $x("//div[@class='main_menu__inner']//child::li[@id='main_menu__search']").click();
-        $x("//input[@id='searchtext']").setValue(coffeeName).pressEnter();
-        String xPath = "//a[@class='to_favorite fa fa-heart ']//following-sibling::div[@class='title']";
-        coffeeName = clearString(coffeeName);
-        ElementsCollection elements = $$(By.xpath(xPath));
-        for (int i = 0; i < elements.size(); i++) {
-            SelenideElement element = elements.get(i);
+        $(By.id("searchtext")).setValue(inputCoffee.getCoffeeName()).pressEnter();
+        inputCoffee.setCoffeeName(clearString(inputCoffee.getCoffeeName()));
+        ElementsCollection elements = $$(By.xpath("//a[@class='to_favorite fa fa-heart ']//following-sibling::div[@class='title']"));
+        boolean found = false;
+        for (SelenideElement element : elements) {
             String nameFromSite = clearString(element.getText());
-            if (nameFromSite.contains(coffeeName)) {
+            if (nameFromSite.contains(inputCoffee.getCoffeeName())) {
+                found = true;
                 element.click();
                 Assert.assertEquals(
                         $x("//ul[@class='description']/li[last()]/span").getText(),
-                        pricePerKilo,
-                        "Цена за 1кг не совпадает");
+                        inputCoffee.getPricePerKilo(),
+                        "Price for 1kg does not match");
                 break;
             }
-            if (i == elements.size() - 1) {
-                Assert.fail("Элемент на найден");
-            }
+        }
+        if (!found) {
+            Assert.fail("Item not found");
         }
     }
 
@@ -93,10 +89,9 @@ public class FindCoffee {
                         Paths.get("src", "test", "resources", "findCoffeeInput.json").toFile(),
                         new TypeReference<List<InputCoffee>>() {
                         });
-        Object[][] inputData = new Object[inputCoffees.size()][2];
+        Object[][] inputData = new Object[inputCoffees.size()][1];
         for (int i = 0; i < inputCoffees.size(); i++) {
-            inputData[i][0] = inputCoffees.get(i).coffeeName;
-            inputData[i][1] = inputCoffees.get(i).pricePerKilo;
+            inputData[i][0] = inputCoffees.get(i);
         }
         return inputData;
     }
@@ -112,5 +107,12 @@ public class FindCoffee {
                 .replaceAll("с", "c")
                 .replaceAll("р", "p")
                 .replaceAll("х", "x");
+    }
+
+    public String clearPrice(String string) {
+        return string
+                .replaceAll("\n.*", "")
+                .replaceAll("[а-яА-Я]", "")
+                .replaceAll(".$", "");
     }
 }

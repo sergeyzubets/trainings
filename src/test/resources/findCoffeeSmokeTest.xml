@@ -2,12 +2,13 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Smoke Tests Suite">
 
+    <parameter name="link" value="https://e-dostavka.by/"/>
+
     <test name="Find Coffee Smoke Test">
         <classes>
             <class name="com.sparta.web.FindCoffee">
-                <parameter name="link" value="https://e-dostavka.by/"/>
                 <methods>
-                    <exclude name="FindCoffeeLavazza4"/>
+                    <exclude name="findCoffeeLavazza4"/>
                 </methods>
             </class>
         </classes>
