@@ -1,4 +1,4 @@
-package com.sparta.web;
+package com.sparta.web.edostavka;
 
 import lombok.Data;
 

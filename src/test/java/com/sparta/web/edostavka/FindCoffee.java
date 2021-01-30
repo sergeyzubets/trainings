@@ -1,4 +1,4 @@
-package com.sparta.web;
+package com.sparta.web.edostavka;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
@@ -86,7 +86,7 @@ public class FindCoffee {
     public Object[][] getInputCoffee() throws IOException {
         List<InputCoffee> inputCoffees = new ObjectMapper()
                 .readValue(
-                        Paths.get("src", "test", "resources", "findCoffeeInput.json").toFile(),
+                        Paths.get("src", "test", "resources", "edostavka/findCoffeeInput.json").toFile(),
                         new TypeReference<List<InputCoffee>>() {
                         });
         Object[][] inputData = new Object[inputCoffees.size()][1];

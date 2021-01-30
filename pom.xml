@@ -7,6 +7,7 @@
     <groupId>org.example</groupId>
     <artifactId>sparta</artifactId>
     <version>1.0-SNAPSHOT</version>
+
     <dependencies>
         <dependency>
             <groupId>org.jetbrains</groupId>
@@ -22,13 +23,6 @@
             <version>1.18.16</version>
             <scope>provided</scope>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>org.projectlombok</groupId>-->
-<!--            <artifactId>lombok</artifactId>-->
-<!--            <version>1.16.18</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/org.json/json -->
         <dependency>
@@ -55,13 +49,6 @@
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>6.14.3</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>RELEASE</version>
             <scope>test</scope>
         </dependency>
 
