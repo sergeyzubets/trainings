@@ -37,8 +37,7 @@ public class SendAndReceiveEmails {
     public void sendAndReceiveEmails(TestEmailInput testEmailInput) {
         //login
         $(By.id("Username")).setValue(testEmailInput.getUsername());
-        $(By.id("Password")).setValue(testEmailInput.getPassword());
-        $x("//input[@class='button loginButton gradientforbutton']").click();
+        $(By.id("Password")).setValue(testEmailInput.getPassword()).pressEnter();
         //new email
         SelenideElement newEmailButton = $x("//a[@class='mail-ComposeButton js-main-action-compose']");
         newEmailButton.shouldBe(Condition.visible);
@@ -60,7 +59,7 @@ public class SendAndReceiveEmails {
         //close popup
         $x("//div[@class='ComposeDoneScreen-Actions']/a[@class='control link link_theme_normal ComposeDoneScreen-Link']")
                 .click();
-        //open sent folder
+        //open sent folder and verify that the email was sent
         $x("//a[@href='#sent']").click();
         $x("//div[@class='b-mail-pager__label']").shouldBe(Condition.visible);
         ElementsCollection elements = $$(By.xpath("//div[@class='mail-MessageSnippet-Item_content-row']//span[@class='mail-MessageSnippet-Item mail-MessageSnippet-Item_subject']/span"));
@@ -80,6 +79,9 @@ public class SendAndReceiveEmails {
         if (!found) {
             Assert.fail("Email not found");
         }
+        //logout
+        $x("//span[@class='user-account__name']//parent::a[@href='https://passport.yandex.ru']").click();
+        $x("//ul[@class='menu__group']/li[last()]/a").click();
     }
 
     @DataProvider
@@ -87,8 +89,7 @@ public class SendAndReceiveEmails {
         List<TestEmailInput> testEmailInput = new ObjectMapper()
                 .readValue(
                         Paths.get("src", "test", "resources", "testEmail/testEmailsInput.json").toFile(),
-                        new TypeReference<List<TestEmailInput>>() {
-                        });
+                        new TypeReference<List<TestEmailInput>>() {});
         Object[][] inputData = new Object[testEmailInput.size()][1];
         for (int i = 0; i < testEmailInput.size(); i++) {
             inputData[i][0] = testEmailInput.get(i);
