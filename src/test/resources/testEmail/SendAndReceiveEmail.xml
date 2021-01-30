@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Send and Receive Email testing">
+
+    <parameter name="url" value="https://mail.tut.by/"/>
+
+    <test name="Send and Receive Email Smoke Test">
+        <classes>
+            <class name="com.sparta.web.sendemail.SendAndReceiveEmails"/>
+        </classes>
+    </test>
+
+</suite>
