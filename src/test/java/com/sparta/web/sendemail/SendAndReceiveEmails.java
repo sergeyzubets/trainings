@@ -1,11 +1,15 @@
 package com.sparta.web.sendemail;
 
-import com.codeborne.selenide.*;
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.web.WebUtils;
 import lombok.Data;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
@@ -19,8 +23,6 @@ import static com.codeborne.selenide.Selenide.*;
 public class SendAndReceiveEmails {
 
     String url;
-    String emailSubject;
-    String emailBody;
 
     @Parameters({"url"})
     @BeforeTest
@@ -28,72 +30,80 @@ public class SendAndReceiveEmails {
         this.url = url;
     }
 
-    @BeforeMethod
-    public void openUrl() {
-        open(getUrl());
+    @DataProvider
+    public Object[][] getTestEmailInputs() throws IOException {
+        List<TestEmailInput> testEmailInput = new ObjectMapper()
+                .readValue(
+                        Paths.get("src", "test", "resources", "testEmail/testEmailsInput.json").toFile(),
+                        new TypeReference<List<TestEmailInput>>() {
+                        });
+        Object[][] inputData = new Object[testEmailInput.size()][1];
+        for (int i = 0; i < testEmailInput.size(); i++) {
+            inputData[i][0] = testEmailInput.get(i);
+        }
+        return inputData;
     }
 
     @Test(dataProvider = "getTestEmailInputs")
     public void sendAndReceiveEmails(TestEmailInput testEmailInput) {
-        //login
+        login(testEmailInput);
+        sendNewEmail(testEmailInput);
+        verifySentEmails(testEmailInput);
+        logout(testEmailInput);
+    }
+
+    public void login(TestEmailInput testEmailInput) {
+        open(getUrl());
         $(By.id("Username")).setValue(testEmailInput.getUsername());
         $(By.id("Password")).setValue(testEmailInput.getPassword()).pressEnter();
-        //new email
+    }
+
+    public void logout(TestEmailInput testEmailInput) {
+        $x("//span[@class='user-account__name']//parent::a[@href='https://passport.yandex.ru']").click();
+        $x("//ul[@class='menu__group']/li[last()]/a").click();
+    }
+
+    private void sendNewEmail(TestEmailInput testEmailInput) {
         SelenideElement newEmailButton = $x("//a[@class='mail-ComposeButton js-main-action-compose']");
         newEmailButton.shouldBe(Condition.visible);
         newEmailButton.click();
         //add recipient
         $x("//div[@class='MultipleAddressesDesktop ComposeRecipients-MultipleAddressField ComposeRecipients-ToField tst-field-to']//div[@contenteditable='true']")
-                .setValue(testEmailInput.getRecipient());
+                .setValue(testEmailInput.getEmailRecipient());
         //add subject
-        setEmailSubject(WebUtils.getDate());
         $x("//div[@class='compose-LabelRow-Content ComposeSubject-Content']/input")
-                .setValue(getEmailSubject());
+                .setValue(testEmailInput.getEmailSubject());
         //add body
-        setEmailBody(WebUtils.getMultiLineEmailBodyWithDate());
         $x("//div[@class='cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_htmlplaceholder']")
-                .setValue(getEmailBody());
+                .setValue(testEmailInput.getEmailBody());
         //send
         $x("//div[@class='ComposeControlPanelButton ComposeControlPanel-Button ComposeControlPanel-SendButton ComposeSendButton ComposeSendButton_desktop']")
                 .click();
         //close popup
         $x("//div[@class='ComposeDoneScreen-Actions']/a[@class='control link link_theme_normal ComposeDoneScreen-Link']")
                 .click();
-        //open sent folder and verify that the email was sent
-        $x("//a[@href='#sent']").click();
-        $x("//div[@class='b-mail-pager__label']").shouldBe(Condition.visible);
-        ElementsCollection elements = $$(By.xpath("//div[@class='mail-MessageSnippet-Item_content-row']//span[@class='mail-MessageSnippet-Item mail-MessageSnippet-Item_subject']/span"));
+    }
+
+    private void verifySentEmails(TestEmailInput testEmailInput) {
+        logout(testEmailInput);
+        login(testEmailInput);
+        String xPath = "//div[@class='mail-MessageSnippet-Item_content-row']//span[@class='mail-MessageSnippet-Item mail-MessageSnippet-Item_subject']/span";
+        SelenideElement emailSubject = $x(xPath);
+        emailSubject.shouldBe(Condition.visible);
+        WebDriver webDriver = WebDriverRunner.getWebDriver();
+        List<WebElement> elements = webDriver.findElements(By.xpath(xPath));
+        //ElementsCollection elements =  $$(By.xpath(xPath));
         boolean found = false;
-        for (SelenideElement element : elements) {
+        for (WebElement element : elements) {
             String subject = element.getText();
-            if (subject.equals(getEmailSubject())) {
-                element.click();
-                Assert.assertEquals(
-                        $x("//div[@class='js-message-body-content mail-Message-Body-Content']").getText(),
-                        getEmailBody(),
-                        "The subject is the same but the body is not");
+            if (subject.equals(testEmailInput.getEmailSubject())) {
                 found = true;
                 break;
             }
         }
         if (!found) {
+            logout(testEmailInput);
             Assert.fail("Email not found");
         }
-        //logout
-        $x("//span[@class='user-account__name']//parent::a[@href='https://passport.yandex.ru']").click();
-        $x("//ul[@class='menu__group']/li[last()]/a").click();
-    }
-
-    @DataProvider
-    public Object[][] getTestEmailInputs() throws IOException {
-        List<TestEmailInput> testEmailInput = new ObjectMapper()
-                .readValue(
-                        Paths.get("src", "test", "resources", "testEmail/testEmailsInput.json").toFile(),
-                        new TypeReference<List<TestEmailInput>>() {});
-        Object[][] inputData = new Object[testEmailInput.size()][1];
-        for (int i = 0; i < testEmailInput.size(); i++) {
-            inputData[i][0] = testEmailInput.get(i);
-        }
-        return inputData;
     }
 }

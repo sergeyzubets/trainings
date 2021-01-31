@@ -6,7 +6,8 @@
 
     <test name="Send and Receive Email Smoke Test">
         <classes>
-            <class name="com.sparta.web.sendemail.SendAndReceiveEmails"/>
+            <class name="com.sparta.web.sendemail.SendAndReceiveEmails">
+            </class>
         </classes>
     </test>
 
