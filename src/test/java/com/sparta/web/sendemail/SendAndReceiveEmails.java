@@ -1,17 +1,17 @@
 package com.sparta.web.sendemail;
 
-import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebDriverRunner;
+import com.codeborne.selenide.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sparta.web.WebUtils;
 import lombok.Data;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.testng.Assert;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
+import org.testng.asserts.SoftAssert;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -23,87 +23,85 @@ import static com.codeborne.selenide.Selenide.*;
 public class SendAndReceiveEmails {
 
     String url;
+    int timeout;
+    int sleepInterval;
 
     @Parameters({"url"})
     @BeforeTest
-    public void setUpUrl(String url) {
+    public void setUp(String url) {
         this.url = url;
+        setTimeout(2);        //in mins
+        setSleepInterval(5);  //in sec
+        Configuration.startMaximized = true;
     }
 
     @DataProvider
     public Object[][] getTestEmailInputs() throws IOException {
-        List<TestEmailInput> testEmailInput = new ObjectMapper()
+        List<TestData> testData = new ObjectMapper()
                 .readValue(
                         Paths.get("src", "test", "resources", "testEmail/testEmailsInput.json").toFile(),
-                        new TypeReference<List<TestEmailInput>>() {
+                        new TypeReference<List<TestData>>() {
                         });
-        Object[][] inputData = new Object[testEmailInput.size()][1];
-        for (int i = 0; i < testEmailInput.size(); i++) {
-            inputData[i][0] = testEmailInput.get(i);
+        Object[][] inputData = new Object[testData.size()][1];
+        for (int i = 0; i < testData.size(); i++) {
+            inputData[i][0] = testData.get(i);
         }
         return inputData;
     }
 
     @Test(dataProvider = "getTestEmailInputs")
-    public void sendAndReceiveEmails(TestEmailInput testEmailInput) {
-        login(testEmailInput);
-        sendNewEmail(testEmailInput);
-        verifySentEmails(testEmailInput);
-        logout(testEmailInput);
+    public void sendAndReceiveEmails(TestData testData) {
+        login(testData.getUser());
+        sendNewEmail(testData.getEmail());
+
+        WebDriver webDriver = WebDriverRunner.getWebDriver();
+        Wait<WebDriver> wait = new WebDriverWait(webDriver, getTimeout() * 60L, getSleepInterval() * 1000L);
+
+        SoftAssert isReceived = new SoftAssert();
+
+        try {
+            wait.until(
+                    CustomExpectedConditions.isEmailReceived(
+                            ".mail-MessageSnippet-Item_subject>span",
+                            testData.getEmail().getSubject()
+                    )
+            );
+            isReceived.assertTrue(true);
+        } catch (TimeoutException ex) {
+            isReceived.assertTrue(false, "Email was not received");
+        }
+
+        logout(webDriver);
+        isReceived.assertAll();
     }
 
-    public void login(TestEmailInput testEmailInput) {
+    public void login(User user) {
         open(getUrl());
-        $(By.id("Username")).setValue(testEmailInput.getUsername());
-        $(By.id("Password")).setValue(testEmailInput.getPassword()).pressEnter();
+        $(By.id("Username")).setValue(user.getUsername());
+        $(By.id("Password")).setValue(user.getPassword()).pressEnter();
     }
 
-    public void logout(TestEmailInput testEmailInput) {
-        $x("//span[@class='user-account__name']//parent::a[@href='https://passport.yandex.ru']").click();
-        $x("//ul[@class='menu__group']/li[last()]/a").click();
+    public void logout(WebDriver webDriver) {
+        $x("//a[@href='https://passport.yandex.ru']").click();
+        $(".legouser__menu-item_action_exit").click();
+        webDriver.quit();
     }
 
-    private void sendNewEmail(TestEmailInput testEmailInput) {
-        SelenideElement newEmailButton = $x("//a[@class='mail-ComposeButton js-main-action-compose']");
+    public void sendNewEmail(Email email) {
+        SelenideElement newEmailButton = $(".js-main-action-compose");
         newEmailButton.shouldBe(Condition.visible);
         newEmailButton.click();
         //add recipient
-        $x("//div[@class='MultipleAddressesDesktop ComposeRecipients-MultipleAddressField ComposeRecipients-ToField tst-field-to']//div[@contenteditable='true']")
-                .setValue(testEmailInput.getEmailRecipient());
+        $(".tst-field-to .composeYabbles").setValue(email.getRecipient());
         //add subject
-        $x("//div[@class='compose-LabelRow-Content ComposeSubject-Content']/input")
-                .setValue(testEmailInput.getEmailSubject());
+        email.setSubject(WebUtils.getDate());
+        $(".ComposeSubject-TextField").setValue(email.getSubject());
         //add body
-        $x("//div[@class='cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_htmlplaceholder']")
-                .setValue(testEmailInput.getEmailBody());
+        email.setBody(WebUtils.getMultiLineEmailBodyWithDate());
+        $(".cke_wysiwyg_div").setValue(email.getBody());
         //send
-        $x("//div[@class='ComposeControlPanelButton ComposeControlPanel-Button ComposeControlPanel-SendButton ComposeSendButton ComposeSendButton_desktop']")
-                .click();
+        $(".ComposeSendButton_desktop").click();
         //close popup
-        $x("//div[@class='ComposeDoneScreen-Actions']/a[@class='control link link_theme_normal ComposeDoneScreen-Link']")
-                .click();
-    }
-
-    private void verifySentEmails(TestEmailInput testEmailInput) {
-        logout(testEmailInput);
-        login(testEmailInput);
-        String xPath = "//div[@class='mail-MessageSnippet-Item_content-row']//span[@class='mail-MessageSnippet-Item mail-MessageSnippet-Item_subject']/span";
-        SelenideElement emailSubject = $x(xPath);
-        emailSubject.shouldBe(Condition.visible);
-        WebDriver webDriver = WebDriverRunner.getWebDriver();
-        List<WebElement> elements = webDriver.findElements(By.xpath(xPath));
-        //ElementsCollection elements =  $$(By.xpath(xPath));
-        boolean found = false;
-        for (WebElement element : elements) {
-            String subject = element.getText();
-            if (subject.equals(testEmailInput.getEmailSubject())) {
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            logout(testEmailInput);
-            Assert.fail("Email not found");
-        }
+        $(".ComposeDoneScreen-Actions").click();
     }
 }

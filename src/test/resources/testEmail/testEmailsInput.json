@@ -1,12 +1,29 @@
 [
   {
-    "username": "szubets",
-    "password": "Sandal_220612",
-    "emailRecipient": "szubets@tut.by"
+    "user": {
+      "username": "szubets",
+      "password": "Sandal_220612"
+    },
+    "email": {
+      "recipient": "szubets@tut.by"
+    }
   },
   {
-    "username": "szubets2",
-    "password": "Sandal_220612",
-    "emailRecipient": "szubets2@tut.by"
+    "user": {
+      "username": "szubets",
+      "password": "Sandal_220612"
+    },
+    "email": {
+      "recipient": "szubets2@tut.by"
+    }
+  },
+  {
+    "user": {
+      "username": "szubets2",
+      "password": "Sandal_220612"
+    },
+    "email": {
+      "recipient": "szubets2@tut.by"
+    }
   }
 ]
