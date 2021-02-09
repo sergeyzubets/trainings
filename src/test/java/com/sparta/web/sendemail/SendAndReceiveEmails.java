@@ -8,8 +8,10 @@ import lombok.Data;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 
@@ -68,10 +70,11 @@ public class SendAndReceiveEmails {
             );
             isReceived.assertTrue(true);
         } catch (TimeoutException ex) {
+
             isReceived.assertTrue(false, "Email was not received");
         }
 
-        logout(webDriver);
+        //logout();
         isReceived.assertAll();
     }
 
@@ -81,10 +84,13 @@ public class SendAndReceiveEmails {
         $(By.id("Password")).setValue(user.getPassword()).pressEnter();
     }
 
-    public void logout(WebDriver webDriver) {
+    @AfterMethod
+    public void logout() {
+        //try catch не смог выйти
         $x("//a[@href='https://passport.yandex.ru']").click();
         $(".legouser__menu-item_action_exit").click();
-        webDriver.quit();
+        //webDriver.quit();
+        Selenide.closeWebDriver();
     }
 
     public void sendNewEmail(Email email) {

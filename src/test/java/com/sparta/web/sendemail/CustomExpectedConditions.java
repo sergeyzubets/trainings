@@ -2,6 +2,7 @@ package com.sparta.web.sendemail;
 
 import com.codeborne.selenide.Selenide;
 import lombok.Data;
+import org.jetbrains.annotations.Nullable;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -25,8 +26,9 @@ public class CustomExpectedConditions implements ExpectedCondition {
         };
     }
 
+    @Nullable
     @Override
-    public Object apply(Object o) {
+    public Object apply(@Nullable Object o) {
         return null;
     }
 }

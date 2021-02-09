@@ -9,6 +9,7 @@ public class Email {
     String recipient;
     @JsonIgnore
     String subject;
+    @JsonIgnore
     String body;
 
 }
