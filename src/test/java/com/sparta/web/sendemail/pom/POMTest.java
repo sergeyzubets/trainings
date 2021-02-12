@@ -8,7 +8,9 @@ import lombok.Data;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -21,6 +23,7 @@ public class POMTest {
     String url;
     int timeout;
     int sleepInterval;
+    File file;
 
     @Parameters({"url"})
     @BeforeTest
@@ -29,6 +32,7 @@ public class POMTest {
         setTimeout(2);        //in mins
         setSleepInterval(5);  //in sec
         Configuration.startMaximized = true;
+        file = Paths.get("src", "test", "resources", "testEmail/testEmailsInput.json").toFile();
     }
 
     @BeforeMethod
@@ -39,10 +43,8 @@ public class POMTest {
     @DataProvider
     public Object[][] getTestEmailInputs() throws IOException {
         List<TestData> testData = new ObjectMapper()
-                .readValue(
-                        Paths.get("src", "test", "resources", "testEmail/testEmailsInput.json").toFile(),
-                        new TypeReference<List<TestData>>() {
-                        });
+                .readValue(getFile(), new TypeReference<List<TestData>>() {
+                });
         Object[][] inputData = new Object[testData.size()][1];
         for (int i = 0; i < testData.size(); i++) {
             inputData[i][0] = testData.get(i);
@@ -52,13 +54,16 @@ public class POMTest {
 
     @Test(dataProvider = "getTestEmailInputs")
     public void receiveEmailsVerification(TestData testData) {
-        TutbyMailLoginPage.login(testData.getUser());
-        TutbyMailMainPage.sendEmail(testData.getEmail());
-        Assert.assertTrue(TutbyMailMainPage.isReceived(testData.getEmail(), getTimeout(), getSleepInterval()), "The email was not received");
+        TutbyMailLoginPage loginPage = new TutbyMailLoginPage();
+        loginPage.login(testData.getUser());
+        TutbyMailMainPage mainPage = new TutbyMailMainPage();
+        mainPage.sendEmail(testData.getEmail());
+        Assert.assertTrue(mainPage.isReceived(testData.getEmail(), getTimeout(), getSleepInterval()));
     }
 
     @AfterMethod
     public void logout() {
-        TutbyMailMainPage.logout();
+        TutbyMailMainPage mainPage = new TutbyMailMainPage();
+        mainPage.logout();
     }
 }
