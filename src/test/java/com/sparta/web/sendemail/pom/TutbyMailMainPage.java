@@ -65,4 +65,5 @@ public class TutbyMailMainPage {
             Assert.fail("Logout unsuccessful due to " + ex.getLocalizedMessage());
         }
     }
+
 }
