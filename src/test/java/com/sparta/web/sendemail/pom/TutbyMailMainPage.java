@@ -3,6 +3,7 @@ package com.sparta.web.sendemail.pom;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
 import com.sparta.web.WebUtils;
 import com.sparta.web.sendemail.CustomExpectedConditions;
 import com.sparta.web.sendemail.Email;
@@ -10,6 +11,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import static com.codeborne.selenide.Selenide.$;
@@ -39,7 +41,9 @@ public class TutbyMailMainPage {
         }
     }
 
-    public static boolean isReceived(Wait<WebDriver> wait, Email email) {
+    public static boolean isReceived(Email email, int timeout, int sleepInterval) {
+        WebDriver webDriver = WebDriverRunner.getWebDriver();
+        Wait<WebDriver> wait = new WebDriverWait(webDriver, timeout * 60L, sleepInterval * 1000L);
         String cssSelector = ".mail-MessageSnippet-Item_subject>span";
         try {
             wait.until(CustomExpectedConditions.isEmailReceived(cssSelector, email.getSubject()));

@@ -1,14 +1,10 @@
 package com.sparta.web.sendemail.pom;
 
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.WebDriverRunner;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.web.sendemail.TestData;
 import lombok.Data;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
@@ -25,7 +21,6 @@ public class POMTest {
     String url;
     int timeout;
     int sleepInterval;
-    Wait<WebDriver> wait;
 
     @Parameters({"url"})
     @BeforeTest
@@ -39,8 +34,6 @@ public class POMTest {
     @BeforeMethod
     public void openTheLink() {
         open(getUrl());
-        WebDriver webDriver = WebDriverRunner.getWebDriver();
-        wait = new WebDriverWait(webDriver, getTimeout() * 60L, getSleepInterval() * 1000L);
     }
 
     @DataProvider
@@ -48,7 +41,8 @@ public class POMTest {
         List<TestData> testData = new ObjectMapper()
                 .readValue(
                         Paths.get("src", "test", "resources", "testEmail/testEmailsInput.json").toFile(),
-                        new TypeReference<List<TestData>>() {});
+                        new TypeReference<List<TestData>>() {
+                        });
         Object[][] inputData = new Object[testData.size()][1];
         for (int i = 0; i < testData.size(); i++) {
             inputData[i][0] = testData.get(i);
@@ -60,7 +54,7 @@ public class POMTest {
     public void receiveEmailsVerification(TestData testData) {
         TutbyMailLoginPage.login(testData.getUser());
         TutbyMailMainPage.sendEmail(testData.getEmail());
-        Assert.assertTrue(TutbyMailMainPage.isReceived(getWait(), testData.getEmail()), "The email was not received");
+        Assert.assertTrue(TutbyMailMainPage.isReceived(testData.getEmail(), getTimeout(), getSleepInterval()), "The email was not received");
     }
 
     @AfterMethod
