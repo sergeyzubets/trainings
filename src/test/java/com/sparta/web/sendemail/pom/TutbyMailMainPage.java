@@ -19,44 +19,48 @@ import static com.codeborne.selenide.Selenide.$x;
 
 public class TutbyMailMainPage {
 
-    public static void sendEmail(Email email) {
+    SelenideElement newEmailButton = $(".js-main-action-compose");
+    SelenideElement addRecipientInput = $(".tst-field-to .composeYabbles");
+    SelenideElement addSubjectInput = $(".ComposeSubject-TextField");
+    SelenideElement addBodyInput = $(".cke_wysiwyg_div");
+    SelenideElement sendEmailButton = $(".ComposeSendButton_desktop");
+    SelenideElement closePopupButton = $(".ComposeDoneScreen-Actions");
+    String emailSubjectLink = ".mail-MessageSnippet-Item_subject>span";
+    SelenideElement userProfileButton = $x("//a[@href='https://passport.yandex.ru']");
+    SelenideElement logoutButton = $(".legouser__menu-item_action_exit");
+
+
+    public void sendEmail(Email email) {
         try {
-            SelenideElement newEmailButton = $(".js-main-action-compose");
             newEmailButton.shouldBe(Condition.visible);
             newEmailButton.click();
-            //add recipient
-            $(".tst-field-to .composeYabbles").setValue(email.getRecipient());
-            //add subject
+            addRecipientInput.setValue(email.getRecipient());
             email.setSubject(WebUtils.getDate());
-            $(".ComposeSubject-TextField").setValue(email.getSubject());
-            //add body
+            addSubjectInput.setValue(email.getSubject());
             email.setBody(WebUtils.getMultiLineEmailBodyWithDate());
-            $(".cke_wysiwyg_div").setValue(email.getBody());
-            //send
-            $(".ComposeSendButton_desktop").click();
-            //close the popup
-            $(".ComposeDoneScreen-Actions").click();
-        } catch (NoSuchElementException ex){
+            addBodyInput.setValue(email.getBody());
+            sendEmailButton.click();
+            closePopupButton.click();
+        } catch (NoSuchElementException ex) {
             Assert.fail(ex.getLocalizedMessage());
         }
     }
 
-    public static boolean isReceived(Email email, int timeout, int sleepInterval) {
+    public boolean isReceived(Email email, int timeout, int sleepInterval) {
         WebDriver webDriver = WebDriverRunner.getWebDriver();
         Wait<WebDriver> wait = new WebDriverWait(webDriver, timeout * 60L, sleepInterval * 1000L);
-        String cssSelector = ".mail-MessageSnippet-Item_subject>span";
         try {
-            wait.until(CustomExpectedConditions.isEmailReceived(cssSelector, email.getSubject()));
+            wait.until(CustomExpectedConditions.isEmailReceived(emailSubjectLink, email.getSubject()));
             return true;
         } catch (TimeoutException timeoutException) {
             return false;
         }
     }
 
-    public static void logout() {
+    public void logout() {
         try {
-            $x("//a[@href='https://passport.yandex.ru']").click();
-            $(".legouser__menu-item_action_exit").click();
+            userProfileButton.click();
+            logoutButton.click();
             Selenide.closeWebDriver();
         } catch (NoSuchElementException | AssertionError ex) {
             Assert.fail("Logout unsuccessful due to " + ex.getLocalizedMessage());
