@@ -23,6 +23,8 @@ public class POMTest {
     int timeout;
     int sleepInterval;
     File file;
+    TutbyMailLoginPage loginPage = new TutbyMailLoginPage();
+    TutbyMailMainPage mainPage = new TutbyMailMainPage();
 
     @Parameters({"url"})
     @BeforeTest
@@ -53,9 +55,7 @@ public class POMTest {
 
     @Test(dataProvider = "getTestEmailInputs")
     public void receiveEmailsVerification(TestData testData) {
-        TutbyMailLoginPage loginPage = new TutbyMailLoginPage();
         loginPage.login(testData.getUser());
-        TutbyMailMainPage mainPage = new TutbyMailMainPage();
         mainPage.sendEmail(testData.getEmail());
         Assert.assertTrue(mainPage.isReceived(testData.getEmail(), getTimeout(), getSleepInterval()));
     }
